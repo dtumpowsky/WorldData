@@ -45,7 +45,7 @@ namespace WorldData.Models
         }
 
 
-        public static List<City> GetAll(string city_name)
+        public static List<City> GetAllCityInfo(string city_name)
         {
             List<City> allCities = new List<City> {};
             MySqlConnection conn = DB.Connection();
