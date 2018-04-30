@@ -22,7 +22,7 @@ namespace WorldData.Models
         private string _governmentForm;
         private string _headOfState;
         private int _capital;
-        private string _code2;
+
 
         public Country(int code, string name, string continent, string region, float surface area, int indepYear, int population, float lifeExpectancy, float gnp, float gnpOld, string localName, string governmentForm, string headOfState, int capital, string code2)
         {
