@@ -40,7 +40,7 @@ namespace WorldData
             });
             app.Run(async (context) =>
             {
-					await context.Response.WriteAsync("Vacations Apps!");
+					await context.Response.WriteAsync("Error!");
             });
         }
     }

@@ -1,14 +1,13 @@
 using System.Collections.Generic;
+using MySql.Data.MySqlClient;
+using WorldData;
 using System;
 using Microsoft.AspNetCore.Mvc;
-using MySql.Data.MySqlClient;
-using WorldData.Models;
 
 namespace WorldData.Models
 {
     public class Country
     {
-        private int _code;
         private string _name;
         private string _continent;
         private string _region;
@@ -22,10 +21,10 @@ namespace WorldData.Models
         private string _governmentForm;
         private string _headOfState;
         private int _capital;
+        private string _code;
 
-        public Country(int code = 0, string name, string continent, string region, float surfaceArea, int indepYear, int population, float lifeExpectancy, float gnp, float gnpOld, string localName, string governmentForm, string headOfState, int capital)
+        public Country(string name, string continent, string region, float surfaceArea, int indepYear, int population, float lifeExpectancy, float gnp, float gnpOld, string localName, string governmentForm, string headOfState, int capital, string code)
         {
-            _code = code;
             _name = name;
             _continent = continent;
             _region = region;
@@ -39,24 +38,25 @@ namespace WorldData.Models
             _governmentForm = governmentForm;
             _headOfState = headOfState;
             _capital = capital;
+            _code = code;
 
         }
 
-        public int GetCode()
+        public string GetCode()
         {
             return _code;
         }
         public string GetName()
         {
-            return _name
+            return _name;
         }
         public string GetContinent()
         {
-            return _continent
+            return _continent;
         }
         public string GetRegion()
         {
-            return _region
+            return _region;
         }
         public float GetSurfaceArea()
         {
@@ -100,17 +100,16 @@ namespace WorldData.Models
         }
 
 
-        public static List<Country> GetAll()
+        public static List<Country> GetAllCountryInfo(string country_name)
         {
             List<Country> allCountries = new List<Country> {};
             MySqlConnection conn = DB.Connection();
             conn.Open();
             MySqlCommand cmd = conn.CreateCommand() as MySqlCommand;
-            cmd.CommandText = @"SELECT * FROM items;";
+            cmd.CommandText = @"SELECT * FROM country WHERE name LIKE '" + country_name + "%\';";
             MySqlDataReader rdr = cmd.ExecuteReader() as MySqlDataReader;
             while(rdr.Read())
             {
-              int countryCode = rdr.GetInt32(0);
               string countryName = rdr.GetString(1);
               string countryContinent = rdr.GetString(2);
               string countryRegion = rdr.GetString(3);
@@ -124,10 +123,11 @@ namespace WorldData.Models
               string countryGovernmentForm = rdr.GetString(11);
               string countryHeadOfState = rdr.GetString(12);
               int countryCapital = rdr.GetInt32(13);
+              string countryCode = rdr.GetString(0);
 
 
-              // Country newCountry = new Country(itemDescription, itemId);
-              // allCountrys.Add(newCountry);
+              Country newCountry = new Country(countryName, countryContinent, countryRegion, countrySurfaceArea, countryIndepYear, countryPopulation, countryLifeExpectancy, countryGNP, countryGNPOld, countryLocalName, countryGovernmentForm, countryHeadOfState, countryCapital, countryCode);
+              allCountries.Add(newCountry);
             }
             conn.Close();
             if (conn != null)
